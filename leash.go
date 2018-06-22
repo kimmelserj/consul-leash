@@ -73,12 +73,15 @@ func (w *Worker) Run() error {
 }
 
 func (w *Worker) StopCommand() error {
-	defer close(w.DoneChan)
-
 	w.stopping = true
 
 	if !w.started {
 		return nil
+	}
+
+	err := w.cmd.Process.Signal(syscall.SIGTERM)
+	if err != nil {
+		return err
 	}
 
 	go func() {
@@ -95,6 +98,7 @@ func (w *Worker) runCommand() {
 	w.cmd = exec.Command(w.command, w.args...)
 	w.cmd.Stdout = os.Stdout
 	w.cmd.Stderr = os.Stderr
+	w.cmd.Stdin = os.Stdin
 
 	err := w.cmd.Start()
 	if err != nil {
