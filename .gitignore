@@ -1,0 +1,4 @@
+/.idea
+/cmd/consul-leash/consul-leash
+
+.DS_Store
