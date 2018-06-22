@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
+	"syscall"
 	"time"
 
 	"github.com/iqoption/consul-leash"
@@ -53,6 +55,12 @@ func main() {
 
 	err = <-l.DoneChan
 	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			if exitErr.ProcessState.Sys().(syscall.WaitStatus).Signal() == syscall.SIGTERM {
+				os.Exit(0)
+			}
+		}
+
 		os.Stderr.WriteString(err.Error())
 		os.Stderr.WriteString("\n")
 		os.Exit(1)
