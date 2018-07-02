@@ -51,7 +51,12 @@ func main() {
 
 	l := leash.New(os.Args[1], os.Args[2:], path, value, stoppingDuration)
 
-	l.Run()
+	err = l.Run()
+	if err != nil {
+		os.Stderr.WriteString(err.Error())
+		os.Stderr.WriteString("\n")
+		os.Exit(1)
+	}
 
 	err = <-l.DoneChan
 	if err != nil {
