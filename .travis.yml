@@ -1,0 +1,20 @@
+language: go
+
+go:
+  - "1.10.x"
+
+env:
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+
+script:
+  - go test -v
+  - go build -o consul-leash_${TRAVIS_TAG}_${GOOS}_${GOARCH}
+
+deploy:
+  provider: releases
+  api_key: "GITHUB OAUTH TOKEN"
+  file:
+    - "consul-leash_${TRAVIS_TAG}_linux_amd64"
+  skip_cleanup: true
+  on:
+    tags: true
