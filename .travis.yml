@@ -11,9 +11,10 @@ services:
 
 before_install:
   - docker run -d -p 127.0.0.1:8500:8500 consul:1.2.0 agent -dev -client 0.0.0.0 --enable-script-checks=true
+  - go get github.com/mattn/goveralls
 
 script:
-  - go test -v
+  - $GOPATH/bin/goveralls -service=travis-ci
   - go build -o consul-leash_${TRAVIS_TAG}_${GOOS}_${GOARCH}
 
 deploy:
