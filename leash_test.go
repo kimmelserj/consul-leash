@@ -123,6 +123,20 @@ func TestWorker_Run(t *testing.T) {
 			return
 		}
 	})
+
+	t.Run("when pass empty key path", func(t *testing.T) {
+		testable := New("false", []string{}, "", "worker-1", time.Second)
+
+		err := testable.Run()
+		if err == nil {
+			t.Error("expected 'Must specify a single key to watch', got nil")
+			return
+		}
+		if err.Error() != "Must specify a single key to watch" {
+			t.Errorf("expected 'Must specify a single key to watch', got '%v'", err.Error())
+			return
+		}
+	})
 }
 
 func TestWorker_StopCommand(t *testing.T) {
