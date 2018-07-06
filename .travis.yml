@@ -8,6 +8,12 @@ go_import_path: github.com/kimmelserj/consul-leash
 env:
   - CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 
+services:
+  - docker
+
+before_install:
+  - docker run -d -p 127.0.0.1:8500:8500 consul:1.2.0 agent -dev -client 0.0.0.0 --enable-script-checks=true
+
 script:
   - go test -v
   - go build -o consul-leash_${TRAVIS_TAG}_${GOOS}_${GOARCH}
