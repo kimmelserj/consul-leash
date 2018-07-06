@@ -35,7 +35,7 @@ func TestWorker_Run(t *testing.T) {
 		select {
 		case err := <-testable.DoneChan:
 			if err != nil {
-				t.Error(err)
+				t.Errorf("expected nil, got '%s'", err.Error())
 				return
 			}
 		case <-time.After(5 * time.Second):
@@ -71,7 +71,51 @@ func TestWorker_Run(t *testing.T) {
 		select {
 		case err := <-testable.DoneChan:
 			if err == nil {
-				t.Error("error expected")
+				t.Error("expected 'exit status 1', got nil")
+				return
+			}
+			if err.Error() != "exit status 1" {
+				t.Errorf("expected 'exit status 1', got '%v'", err.Error())
+				return
+			}
+		case <-time.After(5 * time.Second):
+			t.Error("timeout exceeded")
+			return
+		}
+	})
+
+	t.Run("when run unknown command", func(t *testing.T) {
+		cc, err := api.NewClient(api.DefaultConfig())
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		_, err = cc.KV().Put(&api.KVPair{
+			Key:   "test_worker_run/when_run_unknown_command",
+			Value: []byte("worker-1"),
+		}, nil)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		testable := New("glory-of-satan", []string{}, "test_worker_run/when_run_unknown_command", "worker-1", time.Second)
+
+		err = testable.Run()
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		select {
+		case err := <-testable.DoneChan:
+			if err == nil {
+				t.Error(`expected 'exec: "glory-of-satan": executable file not found in $PATH', got nil`)
+				return
+			}
+			if err.Error() != `exec: "glory-of-satan": executable file not found in $PATH` {
+				t.Errorf(`expected 'exec: "glory-of-satan": executable file not found in $PATH', got '%v'`, err.Error())
 				return
 			}
 		case <-time.After(5 * time.Second):
