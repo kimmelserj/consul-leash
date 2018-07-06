@@ -137,6 +137,47 @@ func TestWorker_Run(t *testing.T) {
 			return
 		}
 	})
+
+	t.Run("when key is removed", func(t *testing.T) {
+		cc, err := api.NewClient(api.DefaultConfig())
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		_, err = cc.KV().Put(&api.KVPair{
+			Key:   "test_worker_run/when_key_is_removed",
+			Value: []byte("worker-1"),
+		}, nil)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		testable := New("sleep", []string{"5"}, "test_worker_run/when_key_is_removed", "worker-1", time.Second)
+
+		err = testable.Run()
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		time.Sleep(time.Second)
+
+		_, err = cc.KV().Delete("test_worker_run/when_key_is_removed", nil)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		select {
+		case <-testable.DoneChan:
+			t.Errorf("command must go on")
+			return
+		case <-time.After(2 * time.Second):
+			return
+		}
+	})
 }
 
 func TestWorker_StopCommand(t *testing.T) {
