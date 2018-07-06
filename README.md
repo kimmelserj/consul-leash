@@ -1,6 +1,7 @@
 # Consul leash
 
 [![Build Status](https://travis-ci.org/kimmelserj/consul-leash.svg?branch=master)](https://travis-ci.org/kimmelserj/consul-leash)
+[![Coverage Status](https://coveralls.io/repos/github/kimmelserj/consul-leash/badge.svg?branch=master)](https://coveralls.io/github/kimmelserj/consul-leash?branch=master)
 
 Main destination of `consul-leash` is watch on specified consul key (environment variable `LEASH_KEY_PATH` value) value and compare consul key value with specified value (environment variable `LEASH_KEY_VALUE` value). If consul key value equals to specified value, then our application starts. If consul key value does not equal to specified value, then our application does not start and consul-leash waits until consul key value will be equal to specified value. If consul key value equals to specified value, then our application starts. If consul key value changed during your application works and consul key's new value does not equal specified value, consul-leash sends SIGTERM signal to your application and wait while your application going down. If your application hangs up, `consul-leash` waits specified period (environment variable `LEASH_STOPPING_DURATION` value) and kill your application and self going down with non-zero exit code.
 
