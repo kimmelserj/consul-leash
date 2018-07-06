@@ -173,4 +173,29 @@ func TestWorker_StopCommand(t *testing.T) {
 			return
 		}
 	})
+
+	t.Run("when stop not started command", func(t *testing.T) {
+		cc, err := api.NewClient(api.DefaultConfig())
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		_, err = cc.KV().Put(&api.KVPair{
+			Key:   "test_worker_stop_command/when_stop_not_started_command",
+			Value: []byte("worker-1"),
+		}, nil)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+
+		testable := New("false", []string{}, "test_worker_stop_command/when_stop_not_started_command", "worker-1", time.Second)
+
+		err = testable.StopCommand()
+		if err != ErrCommandNotStarted {
+			t.Errorf("expected '%s', got '%s'", ErrCommandNotStarted.Error(), err.Error())
+			return
+		}
+	})
 }
