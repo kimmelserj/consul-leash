@@ -7,7 +7,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/iqoption/consul-leash"
+	"github.com/kimmelserj/consul-leash"
 )
 
 var (
