@@ -3,8 +3,6 @@ language: go
 go:
   - "1.10.x"
 
-go_import_path: github.com/kimmelserj/consul-leash
-
 env:
   - CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 
