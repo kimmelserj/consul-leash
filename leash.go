@@ -1,6 +1,7 @@
 package leash
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -10,6 +11,10 @@ import (
 
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/consul/watch"
+)
+
+var (
+	ErrCommandNotStarted = errors.New("command not started")
 )
 
 type Worker struct {
@@ -76,7 +81,7 @@ func (w *Worker) StopCommand() error {
 	w.stopping = true
 
 	if !w.started {
-		return nil
+		return ErrCommandNotStarted
 	}
 
 	err := w.cmd.Process.Signal(syscall.SIGTERM)
