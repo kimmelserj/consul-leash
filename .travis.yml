@@ -3,12 +3,6 @@ language: go
 go:
   - "1.10.x"
 
-env:
-  global:
-    - CGO_ENABLED=0
-    - GOOS=linux
-    - GOARCH=amd64
-
 services:
   - docker
 
@@ -18,7 +12,7 @@ before_install:
 
 script:
   - $GOPATH/bin/goveralls -service=travis-ci
-  - go build -o consul-leash_${TRAVIS_TAG}_${GOOS}_${GOARCH}
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o consul-leash_${TRAVIS_TAG}_linux_amd64
 
 deploy:
   provider: releases
