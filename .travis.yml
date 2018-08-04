@@ -19,7 +19,8 @@ script:
 
 deploy:
   provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
+  api_key:
+    secure: J35OTKrkQVMtVVTrZMsVs/5TtXbU3K4PrRy8aYXykGbSXBHZhd5FGDornUCycX7V9jBUud93BJTwzn7Lzp8PIrwpk4jTj2G1NAN8uMCgomcMKJf0vYZ8ADcQcVR36k8HVch4vkPcK/0gGb1Myb1UAYuoHDjOJxicJNBRuUOfun+lb4GA5oXsllvNq3WzGwjuchsg5zhj8+x1EdvMff8FJekZ3x2LCKjs67TbUpXTJ8RON9FHxNCROoDwY8Rm6iDBi/wNKjnK8rOAdl45oPfZ+s4OrhBu5kP5GmKtLUUwKLPJL4opYVkA2V/plrPv9VtG9CDakvaQ6fOVIQZqAmwdxHdJezha8kxybq38C8xN9VHbVemRJhGbS41DWcMFAdQ5cRjcwJ+UjX1/O0iaHLcK4cSg0u8H3BUeiKkfH/1oduBkUh1bU31HQXnA4GCIVWS/JuURXa5IZ3QssY8A/ToRuoG9A+myMyhm2v2sj/I4qnRmqj0b3mKOnLweMxzrObfyb016/Dk1pmK6bNCoaBtILVCRjMiT3bbnR1ba9yE2kdHKlJHTxONFi3yN6w9hsDiNUYgBoQpvmC73MP/zdIi34UkZynmFVpLMLIP2bymkiy+66/7cBY+7gS56L9sdSCWmjvbj8CjQlo+brw8AjFKx1JhW3TgBPgfND1QAlzHGhb4=
   file:
     - "consul-leash_${TRAVIS_TAG}_linux_amd64"
   skip_cleanup: true
