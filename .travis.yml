@@ -4,9 +4,10 @@ go:
   - "1.10.x"
 
 env:
-  - CGO_ENABLED=0
-  - GOOS=linux
-  - GOARCH=amd64
+  global:
+    - CGO_ENABLED=0
+    - GOOS=linux
+    - GOARCH=amd64
 
 services:
   - docker
