@@ -12,7 +12,11 @@ before_install:
 
 script:
   - $GOPATH/bin/goveralls -service=travis-ci
-  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o consul-leash_${TRAVIS_TAG}_linux_amd64
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o consul-leash_${TRAVIS_TAG}_linux_amd64 github.com/kimmelserj/consul-leash/cmd/consul-leash
+  - cp consul-leash_${TRAVIS_TAG}_linux_amd64 consul-leash
+  - [ -z ${TRAVIS_TAG} ] || docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+  - [ -z ${TRAVIS_TAG} ] || docker build --pull -t sergeykimmeliqoptioncom/consul-leash:${TRAVIS_TAG} .
+  - [ -z ${TRAVIS_TAG} ] || docker push sergeykimmeliqoptioncom/consul-leash:${TRAVIS_TAG}
 
 deploy:
   provider: releases

@@ -18,7 +18,7 @@ var (
 
 func main() {
 	if len(os.Args) < 2 {
-		os.Stderr.WriteString(fmt.Sprintf("Usage: %s", os.Args[0]))
+		os.Stderr.WriteString(fmt.Sprintf("Usage: %s [COMMAND] [ARGS]", os.Args[0]))
 		os.Stderr.WriteString("\n")
 		os.Exit(1)
 	}
