@@ -15,9 +15,3 @@ Usually consul-leash is used as entry point for your applications. `consul-leash
 ## Docker image usage
 
     docker run --rm -it -e CONSUL_HTTP_ADDR=consul-agent:8500 -e LEASH_KEY_PATH=my/daemon/current_master -e LEASH_KEY_VALUE=worker-1 your-image-based-on-consul-leash my-daemon arg1 arg2 arg3
-
-## Use cases
-
-### Singleton unix process
-
-**WARNING!!! This use case does not guaranty single process execution in one time moment. In switching moment can be situation when old master and new master can work simultaneously.** 
